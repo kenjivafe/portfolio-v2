@@ -136,6 +136,26 @@
   transition: transform var(--transition);
 }
 
+.social-icon {
+  display: none;
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+  filter: grayscale(1) invert(var(--icon-invert, 0)) brightness(var(--icon-brightness, 1));
+  transition: opacity var(--transition), filter var(--transition), transform var(--transition);
+}
+
+.social-link:hover .social-icon {
+  opacity: 1;
+  filter: grayscale(0) invert(0) brightness(1);
+}
+
+.social-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .social-link:hover {
   transform: translateY(-4px);
 }
@@ -178,11 +198,24 @@
   .email-wrap { grid-row: 1; min-height: 0; padding: 0 0 0 16px; }
   .social-grid { 
     grid-row: 2; 
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(3, auto);
+    justify-content: flex-start;
+    gap: 32px;
     border-bottom: var(--border);
     padding: 0 0 0 16px;
+    align-content: center;
   }
+  .social-icon {
+    display: block;
+  }
+  .social-text {
+    display: none;
+  }
+  .social-link {
+    flex-direction: row;
+    align-items: center;
+  }
+
   .contact-heading {
     font-size: clamp(56px, 12vw, 80px);
     line-height: 0.9;

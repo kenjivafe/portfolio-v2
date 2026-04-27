@@ -7,9 +7,9 @@ import Reveal from '../ui/reveal';
 import styles from './contact.module.css';
 
 const LINKS = [
-  { type: 'GitHub', val: 'kenjivafe', href: 'https://github.com/kenjivafe' },
-  { type: 'Twitter / X', val: '@kenjivafe', href: 'https://twitter.com/kenjivafe' },
-  { type: 'LinkedIn', val: 'kenji-von-ashley', href: 'https://linkedin.com/in/kenji-von-ashley' },
+  { type: 'GitHub', val: 'kenjivafe', href: 'https://github.com/kenjivafe', slug: 'github' },
+  { type: 'Twitter / X', val: '@kenjivafe', href: 'https://twitter.com/kenjivafe', slug: 'x' },
+  { type: 'LinkedIn', val: 'kenji-von-ashley', href: 'https://linkedin.com/in/kenji-von-ashley', slug: 'linkedin' },
 ];
 
 export default function Contact() {
@@ -66,8 +66,15 @@ export default function Contact() {
           <div className={styles['social-grid']}>
             {LINKS.map(link => (
               <a key={link.type} href={link.href} target="_blank" rel="noopener noreferrer" className={styles['social-link']}>
-                <span className={styles['cl-type']}>{link.type}</span>
-                <span className={styles['social-val']}>{link.val}</span>
+                <img 
+                  src={`https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/${link.slug}.svg`} 
+                  alt={link.type}
+                  className={styles['social-icon']}
+                />
+                <div className={styles['social-text']}>
+                  <span className={styles['cl-type']}>{link.type}</span>
+                  <span className={styles['social-val']}>{link.val}</span>
+                </div>
               </a>
             ))}
           </div>

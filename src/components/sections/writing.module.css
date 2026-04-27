@@ -32,3 +32,17 @@
   color: var(--black-b-color);
 }
 .post-excerpt { font-size: 13px; line-height: 1.75; color: var(--gray-d1-color); }
+
+@media (max-width: 860px) {
+  .writing-grid { grid-template-columns: 1fr; }
+  .post-card { 
+    border-right: none; 
+    padding: 32px 24px; 
+  }
+  .post-card:nth-last-child(-n+2) { 
+    border-bottom: var(--border); 
+  }
+  .post-card:last-child { 
+    border-bottom: none; 
+  }
+}
