@@ -1,0 +1,43 @@
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: color-mix(in srgb, var(--white-b-color) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: var(--border);
+}
+
+
+.inner {
+  display: grid;
+  grid-template-columns: var(--gutter) repeat(12,1fr) var(--gutter);
+  height: 56px; align-items: center;
+}
+
+.logo { grid-column: 2/5; padding-left: 24px; display: flex; align-items: center; }
+.logo-svg {
+  height: 28px;
+  width: auto;
+  transition: transform var(--transition);
+}
+.logo-svg:hover { transform: scale(1.05); }
+
+.links { grid-column: 5/12; display: flex; gap: 36px; list-style: none; justify-content: center; }
+.links a {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gray-d1-color); transition: color var(--transition);
+}
+.links a:hover { color: var(--black-b-color); }
+
+.status {
+  grid-column: 12/14; display: flex; align-items: center;
+  justify-content: flex-end; gap: 7px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em; color: var(--gray-d1-color);
+  padding-right: 24px;
+  cursor: none;
+}
+
+.dot {
+  width: 6px; height: 6px; background: #22c55e;
+  border-radius: 50%; animation: blink 2s ease infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }

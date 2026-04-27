@@ -1,0 +1,31 @@
+.grid-rails {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 250;
+  display: flex; justify-content: center;
+}
+
+.inner {
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--gutter) repeat(12, 1fr) var(--gutter);
+}
+
+.inner::before,
+.inner::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0;
+  width: 1px; background: var(--gray-l1-color);
+  z-index: 2;
+}
+
+.inner::before { left: var(--gutter); }
+.inner::after  { right: var(--gutter); }
+
+/* Background vertical lines */
+.grid-line {
+  width: 1px;
+  height: 100%;
+  background: var(--gray-l1-color);
+  opacity: 0.3;
+}

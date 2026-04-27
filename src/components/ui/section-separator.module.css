@@ -1,0 +1,13 @@
+.separator {
+  width: 100%;
+  border-top: var(--border);
+  border-bottom: var(--border);
+  height: 40px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--gray-l2-color),
+    var(--gray-l2-color) 1.5px,
+    transparent 1.5px,
+    transparent 12px
+  );
+}

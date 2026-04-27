@@ -1,0 +1,78 @@
+.skills-section { }
+
+.capabilities-grid {
+  grid-column: 2/14;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-left: var(--border);
+}
+
+.tech-cell {
+  border-right: var(--border);
+  border-bottom: var(--border);
+  transition: background var(--transition);
+}
+
+.tech-cell:hover {
+  background: var(--gray-l2-color);
+}
+
+.tech-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 24px;
+}
+
+.tech-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.4;
+  filter: grayscale(1) invert(var(--icon-invert, 0)) brightness(var(--icon-brightness, 1));
+  transition: opacity var(--transition), filter var(--transition), transform var(--transition);
+}
+
+.tech-icon-svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.4;
+  filter: grayscale(1) brightness(var(--icon-brightness, 1));
+  transition: opacity var(--transition), filter var(--transition), transform var(--transition);
+}
+
+.tech-cell:hover .tech-icon,
+.tech-cell:hover .tech-icon-svg {
+  opacity: 1;
+  filter: grayscale(0) invert(0) brightness(1);
+  transform: scale(1.1);
+}
+
+.tech-cell:hover .is-dark-icon {
+  filter: grayscale(0) invert(var(--icon-invert, 0)) brightness(1);
+}
+
+.tech-name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--gray-d1-color);
+  transition: color var(--transition);
+}
+
+.tech-cell:hover .tech-name {
+  color: var(--black-b-color);
+}
+
+@media (max-width: 1024px) {
+  .capabilities-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .capabilities-grid { grid-template-columns: repeat(2, 1fr); }
+  .tech-inner { padding: 24px 20px; gap: 12px; }
+  .tech-name { font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+  .capabilities-grid { grid-template-columns: 1fr; }
+}
