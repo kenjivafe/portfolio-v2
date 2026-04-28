@@ -9,8 +9,14 @@ export const metadata: Metadata = {
   title: "Kenji — Developer",
   description: "Software Engineer & Builder based in Kalinga, Philippines.",
   icons: {
-    icon: "/kenjivafe-logo.svg",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/kenjivafe-logo.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
