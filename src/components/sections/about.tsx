@@ -67,7 +67,7 @@ export default async function About() {
         <Reveal delay="d2" className={styles["about-right"]}>
           <div className={styles["timeline-head"]}>Experience</div>
           <div className={styles["tl-item"]}>
-            <div className={styles["tl-yr"]}>2024 — Now</div>
+            <div className={styles["tl-yr"]}>2026 — Now</div>
             <div>
               <div className={styles["tl-role"]}>Founder and Lead Developer</div>
               <div className={styles["tl-place"]}>Rigko</div>
