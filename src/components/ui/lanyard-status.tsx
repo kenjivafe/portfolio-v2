@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { useLanyard } from '@/hooks/use-lanyard';
 import { Antigravity } from '@lobehub/icons';
 import styles from './lanyard.module.css';
@@ -28,6 +28,36 @@ interface LastFMData {
   nowPlaying: boolean;
 }
 
+interface GameData {
+  name: string;
+}
+
+function getLastGameSnapshot() {
+  if (typeof window === 'undefined') return null;
+  return window.localStorage.getItem(LAST_GAME_STORAGE_KEY);
+}
+
+function subscribeToLastGameStore(onStoreChange: () => void) {
+  window.addEventListener('storage', onStoreChange);
+  window.addEventListener('last-game-played-change', onStoreChange);
+
+  return () => {
+    window.removeEventListener('storage', onStoreChange);
+    window.removeEventListener('last-game-played-change', onStoreChange);
+  };
+}
+
+function parseLastGame(snapshot: string | null): GameData | null {
+  if (!snapshot) return null;
+
+  try {
+    const parsed = JSON.parse(snapshot) as Partial<GameData>;
+    return typeof parsed.name === 'string' ? { name: parsed.name } : null;
+  } catch {
+    return null;
+  }
+}
+
 function LoadingSpinner({ className }: { className?: string }) {
   return (
     <svg className={`${styles['animateSpin']} ${className}`} viewBox="0 0 24 24" fill="none">
@@ -37,7 +67,7 @@ function LoadingSpinner({ className }: { className?: string }) {
   );
 }
 
-const LASTFM_API_KEY = "30f5d272443c3274143006142c935cea";
+const LAST_GAME_STORAGE_KEY = 'portfolio:last-game-played';
 
 export default function LanyardStatus() {
   const { data } = useLanyard();
@@ -45,7 +75,11 @@ export default function LanyardStatus() {
   const [wakaLoading, setWakaLoading] = useState(true);
   const [wakaError, setWakaError] = useState(false);
   const [lastFM, setLastFM] = useState<LastFMData | null>(null);
-  const [lastFMLoading, setLastFMLoading] = useState(true);
+  const lastGameSnapshot = useSyncExternalStore(
+    subscribeToLastGameStore,
+    getLastGameSnapshot,
+    () => null
+  );
 
   useEffect(() => {
     const fetchWaka = async () => {
@@ -73,7 +107,6 @@ export default function LanyardStatus() {
 
     const fetchLastFM = async () => {
       try {
-        setLastFMLoading(true);
         const res = await fetch('/api/lastfm');
         if (!res.ok) throw new Error('Last.fm API failed');
         const json = await res.json();
@@ -87,8 +120,6 @@ export default function LanyardStatus() {
         }
       } catch (err) {
         console.error("Last.fm error:", err);
-      } finally {
-        setLastFMLoading(false);
       }
     };
 
@@ -103,6 +134,21 @@ export default function LanyardStatus() {
 
   const gameActivity = data?.activities.find(a => a.type === 0) || data?.activities.find(a => a.name !== "Custom Status" && a.name !== "Spotify" && a.type !== 4);
   const isPlayingGame = !!gameActivity;
+  const lastGame = parseLastGame(lastGameSnapshot);
+  const displayedGame = isPlayingGame ? gameActivity : lastGame;
+
+  useEffect(() => {
+    if (!gameActivity?.name) return;
+
+    const nextLastGame = { name: gameActivity.name };
+
+    try {
+      window.localStorage.setItem(LAST_GAME_STORAGE_KEY, JSON.stringify(nextLastGame));
+      window.dispatchEvent(new Event('last-game-played-change'));
+    } catch (err) {
+      console.error("Last game save error:", err);
+    }
+  }, [gameActivity?.name]);
 
   return (
     <div className={styles['status-container']}>
@@ -153,23 +199,23 @@ export default function LanyardStatus() {
         </div>
       </div>
 
-      {/* Activity */}
+      {/* Games */}
       <div className={styles['status-item']}>
         <div className={styles['status-icon-wrap']}>
           <DiscordIcon className={`${styles['status-icon']} ${isPlayingGame ? styles['icon-activity'] : ''}`} />
         </div>
         <div className={styles['status-text']}>
           <div className={styles['status-top']}>
-            <span className={styles['status-title']}>Activity</span>
-            {isPlayingGame && (
+            <span className={styles['status-title']}>Games</span>
+            {displayedGame && (
               <>
                 <span className={styles['status-dot-sep']}>•</span>
-                <span className={styles['status-time']}>Playing</span>
+                <span className={styles['status-time']}>{isPlayingGame ? 'Playing' : 'Last played'}</span>
               </>
             )}
           </div>
           <div className={styles['status-detail']}>
-            {isPlayingGame ? `${gameActivity?.name}` : (data?.discord_status === 'offline' ? 'Offline' : 'Online')}
+            {displayedGame ? displayedGame.name : 'No game activity yet'}
           </div>
         </div>
       </div>
