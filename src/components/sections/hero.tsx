@@ -1,6 +1,13 @@
 import styles from './hero.module.css';
+import { getCachedContributions } from '@/lib/get-cached-contributions';
+import { GITHUB_USERNAME, countContributionsThisYear } from '@/lib/github';
 
-export default function Hero() {
+export default async function Hero() {
+  const contributions = await getCachedContributions(GITHUB_USERNAME);
+  const commitsThisYear = contributions.length
+    ? countContributionsThisYear(contributions).toLocaleString('en')
+    : '—';
+
   return (
     <div className={styles['hero-wrap']}>
       <div className={`row ${styles['eyebrow-row']} anim a1`}>
@@ -32,7 +39,7 @@ export default function Hero() {
             <div className={styles['stat-label']}>Unfinished Side Projects</div>
           </div>
           <div className={styles.stat}>
-            <div className={styles['stat-num']}>700<sup>+</sup></div>
+            <div className={styles['stat-num']}>{commitsThisYear}</div>
             <div className={styles['stat-label']}>Commits this year</div>
           </div>
           <div className={styles.stat}>

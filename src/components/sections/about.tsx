@@ -8,10 +8,8 @@ import {
   GitHubContributionsFallback,
 } from "@/components/ui/github-contributions";
 import { getCachedContributions } from "@/lib/get-cached-contributions";
+import { GITHUB_USERNAME, GITHUB_PROFILE_URL } from "@/lib/github";
 import LanyardStatus from "@/components/ui/lanyard-status";
-
-const GITHUB_USERNAME = "kenjivafe";
-const GITHUB_PROFILE_URL = "https://github.com/kenjivafe";
 
 export default async function About() {
   const contributions = await getCachedContributions(GITHUB_USERNAME);
